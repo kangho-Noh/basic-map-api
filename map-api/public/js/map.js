@@ -8,7 +8,6 @@ var mapContainer = document.getElementById('map'),
         level: 3
     };
 if (navigator.geolocation) {
-    console.log("geolocation 성공")
     // GeoLocation을 이용해서 접속 위치를 얻어옵니다
     navigator.geolocation.getCurrentPosition(function (position) {
         lat = position.coords.latitude; // 위도
@@ -18,15 +17,10 @@ if (navigator.geolocation) {
             center: new kakao.maps.LatLng(lat, lon),
             level: 3
         };
-        console.log("ccc")
         makemap();
 
         // 날씨를 불러오기
         Weather()
-        // let _rainfall = weather.nowWeather.rainfall;
-        // let _temperature = weather.nowWeather.temperature;
-        // console.log("map.js에서 불러온 강수량과 기온은 각각", _rainfall, _temperature);
-        //
     });
 } else {
     // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
@@ -97,6 +91,7 @@ function Weather() {
     console.log(_calcDate.yeardate);
     console.log(_calcDate.time);
 
+    //  http://cors-anywhere.herokuapp.com/corsdemo 에서 demo 서버 열어야 한다.
     var url = 'https://cors-anywhere.herokuapp.com/http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst'; //동네예보
     var queryParams = '?' + encodeURIComponent('ServiceKey') + '=' + serviceKey;
     queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /* */
@@ -110,14 +105,14 @@ function Weather() {
     xhr.open('GET', url + queryParams); // 요것때매 CORS 오류 발생
     xhr.onreadystatechange = function () {
         if (this.readyState == 4) {
-            alert('Status: ' + this.status + 'nHeaders: ' + JSON.stringify(this.getAllResponseHeaders()) + 'nBody: ' + this.responseText);
+            const body = JSON.parse(this.responseText);
+            console.log("--> 강수량은", body.response.body.items.item[0].fcstValue, "입니다.");
+            console.log("--> 기온은", body.response.body.items.item[6].fcstValue, "입니다.");
         }
     };
 
     xhr.send('');
 };
-
-
 
 function calcDate() {
     var today = new Date();
@@ -127,8 +122,6 @@ function calcDate() {
     var day = today.getDate();
     var hours = today.getHours();
     var minutes = today.getMinutes();
-
-    // $('.weather-date').html(month + "월 " + day + "일 " + week[today.getDay()] + "요일");
 
     /*
      * 기상청 30분마다 발표
