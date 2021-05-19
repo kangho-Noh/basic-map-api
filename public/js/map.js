@@ -83,11 +83,8 @@ function displayMarker(place) {
 }
 
 
-
-
 function weather(lat, lon) {
   var xhr = new XMLHttpRequest();
-
   var serviceKey = 'kr%2FQXx6vPof0PDy8c%2BYL6vB2U7M7rv%2ByDaBzN%2FJ1orHghEJnhIds2hOmt59WFhziYr0vvgFzsKAg1UlTpPLuQw%3D%3D'
   let _calcDate = calcDate();
   console.log(_calcDate.yeardate);
@@ -106,7 +103,11 @@ function weather(lat, lon) {
   xhr.onreadystatechange = function () {
     if (this.readyState == 4) {
       const body = JSON.parse(this.responseText);
-      console.log("--> 강수확률은", body.response.body.items.item[0].fcstValue, "입니다.");
+      console.log(body.response.body.items);
+      console.log("--> 날씨는", body.response.body.items.item[1].fcstValue, "입니다.");
+      // 강수형태(PTY) 코드 : 없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
+      //여기서 비/눈은 비와 눈이 섞여 오는 것을 의미 (진눈개비)
+
       console.log("--> 기온은", body.response.body.items.item[4].fcstValue, "입니다.");
     }
   };
