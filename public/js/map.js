@@ -106,9 +106,7 @@ function weather(lat, lon) {
       console.log(body.response.body.items);
       console.log("--> 날씨는", body.response.body.items.item[1].fcstValue, "입니다.");
       // 강수형태(PTY) 코드 : 없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
-      //여기서 비/눈은 비와 눈이 섞여 오는 것을 의미 (진눈개비)
-
-      console.log("--> 기온은", body.response.body.items.item[4].fcstValue, "입니다.");
+      // 여기서 비/눈은 비와 눈이 섞여 오는 것을 의미 (진눈개비)
     }
   };
   xhr.send('');
