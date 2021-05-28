@@ -3,6 +3,12 @@ body {
   background-color: #facac0;
 }
 
+.map-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 header {
   display: flex;
   justify-content: center;
@@ -35,6 +41,7 @@ h1 {
 }*/
 
 .main {
+  width: 60%;
   margin: 10px 30px;
   display: grid;
   grid-template-columns: 3fr 1fr;

@@ -1,52 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>Momokji</title>
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=059ebad3d5ccd28178357c542b8c80d1&libraries=services
+"></script>
   </head>
   <body>
-    <header>
-      <div>
-        <h1>오늘은</h1>
-        <!--날씨, 요일-->
-        <div class="js-input">
-          <span id="weather">비가 오는</span> <span id="day">일요일</span>
-        </div>
-        <h1 class="align-right">이네요.</h1>
-      </div>
-    </header>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
 
-    <div class="main">
-      <div class="contents">
-        <div class="food-list">
-          <ul>
-            <li>닭갈비</li>
-            <li>칼국수</li>
-          </ul>
-        </div>
-        <div class="map_wrap">
-          <div
-            id="map"
-            style="
-              width: 100%;
-              height: 100%;
-              position: relative;
-              overflow: hidden;
-            "
-          ></div>
-        </div>
-      </div>
-      <div class="sidebar">사이드바 영역입니다.</div>
-    </div>
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
 
-    <div class="footer">푸터 영역입니다.</div>
-    <script
-      type="text/javascript"
-      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=059ebad3d5ccd28178357c542b8c80d1&libraries=services,clusterer,drawing"
-    ></script>
-    <script type="text/javascript" src="/js/map.js"></script>
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
   </body>
 </html>
