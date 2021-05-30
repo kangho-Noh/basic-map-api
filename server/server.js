@@ -29,6 +29,7 @@ app.get('/', (req, res) => {
 
 // data가 0. 맑음
 app.post("/database0", (req, res) => {
+    console.log("/database0 접속완료");
     let month = moment().month() + 1;
     console.log("현재 월 : ", month);
     if (3 <= month && month <= 5) { // 맑고 봄
@@ -63,6 +64,7 @@ app.post("/database0", (req, res) => {
 
 // data가 0이 아님. 비/눈
 app.post("/database1", (req, res) => {
+    console.log("/database1 접속완료");
     let month = moment().month() + 1;
     console.log("현재 월 : ", month);
     if (3 <= month && month <= 5) { // 비오고 봄

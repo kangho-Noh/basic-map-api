@@ -16,6 +16,7 @@ const weather = (_weather, callback) => {
     queryParams += '&' + encodeURIComponent('ny') + '=' + encodeURIComponent(Math.round(_lon)); /* */
     console.log("weather.js의 ", _lat, ", ", _lon);
     console.log("접속하는 weather JSON은 ", url+queryParams);
+    console.log("날씨 API에 request를 보내고 응답을 기다리는 중입니다...");
     request({
         url: url + queryParams,
         method: 'GET'
@@ -23,7 +24,7 @@ const weather = (_weather, callback) => {
         //console.log('Status', response.statusCode);
         //console.log('Headers', JSON.stringify(response.headers));
         // console.log('Reponse received -->', body);
-        console.log("URL은 --> ", url + queryParams);
+        console.log("응답이 완료됐습니다.");
         var bodyObj = JSON.parse(body);
         console.log("--> 날씨는", bodyObj.response.body.items.item[1].fcstValue, "입니다.");
         // 강수형태(PTY) 코드 : 없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)

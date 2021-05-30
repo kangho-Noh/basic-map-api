@@ -20,8 +20,8 @@ const Home = () => {
             <div className="food-list">
               <ul>
                 {/*<Foodlist />*/}
-                <li>닭갈비</li>
-                <li>칼국수</li>
+                <li>메뉴1</li>
+                <li>메뉴2</li>
               </ul>
             </div>
             <div className="map_wrap">

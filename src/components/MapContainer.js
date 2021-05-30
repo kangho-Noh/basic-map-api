@@ -71,18 +71,11 @@ class MapContainer extends Component {
       var ps = new kakao.maps.services.Places();
 
       // 키워드로 장소를 검색합니다
-      ps.keywordSearch("닭갈비", this.placesSearchCB, {
-        radius: 1000,
-        location: new kakao.maps.LatLng(nowlat, nowlon),
-      });
-      ps.keywordSearch("칼국수", this.placesSearchCB, {
-        radius: 1000,
-        location: new kakao.maps.LatLng(nowlat, nowlon),
-      });
+      
       return new Promise(function (resolve, reject) {
         resolve({ latitude: nowlat, longitude: nowlon });
       })
-      .then(function (result) {
+      .then( (result) => {
         console.log("promise에서 넘어온 데이터 : ", result);
         fetch("http://localhost:3001/weather", { // 위도, 경도 정보를 바탕으로 날씨정보 가져옴
           method: "post",
@@ -109,8 +102,29 @@ class MapContainer extends Component {
               })
                 .then((res) => res.json())
                 .then((json) => {
-                  console.log(json);
+                  console.log("출력되는 json : ", json);
+                  ps.keywordSearch(json[0].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[1].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[2].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[3].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[4].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
                 })
+                
             }
             else { // 비/눈이 올 경우 디비 호출
               fetch(`http://localhost:3001/database1`, {
@@ -122,8 +136,34 @@ class MapContainer extends Component {
               })
                 .then((res) => res.json())
                 .then((json) => {
-                  console.log(json);
+                  console.log("출력되는 json : ", json);
+                  ps.keywordSearch(json[0].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[1].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[2].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[3].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[4].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
                 })
+              
+                
+                // ps.keywordSearch("피자", this.placesSearchCB, {
+                //   radius: 1000,
+                //   location: new kakao.maps.LatLng(nowlat, nowlon),
+                // });  
             }
 
           })
