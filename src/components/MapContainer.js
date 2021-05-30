@@ -16,6 +16,7 @@ class MapContainer extends Component {
       isLoading: true,
       lat: 37.506502,
       lon: 127.053617,
+      menus:[1, 2, 3],
     };
 
     this.getLocation = this.getLocation.bind(this);
@@ -157,6 +158,8 @@ class MapContainer extends Component {
                     radius: 1000,
                     location: new kakao.maps.LatLng(nowlat, nowlon),
                   });
+                  this.menus = [json[0].menu, json[1].menu, json[2].menu, json[3].menu, json[4].menu];
+                  this.setState({isLoading: false});
                 })
               
                 
@@ -201,7 +204,10 @@ class MapContainer extends Component {
     kakao.maps.event.addListener(marker, "click", function () {
       // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
       infowindow.setContent(
-        `<div style="padding:5px;font-size:12px;"><a href="${place.place_url}" target="_blank">${place.place_name}</a></div>`
+        `<div style="padding:5px;font-size:12px;">
+        <a href="${place.place_url}" target="_blank">${place.place_name}</a><br>
+        <a href="${"http://map.naver.com/index.nhn?elng="+place.x+"&elat="+place.y+"&etext="+place.place_name+"&pathType=1"}" target="_blank"  style="color:green; text-decoration:underline">${place.place_name+"까지 길찾기"}</a>
+        </div>`
       );
       infowindow.open(map, marker);
     });
@@ -211,8 +217,9 @@ class MapContainer extends Component {
     this.getMap();
   }
 
-  render() {
-    return <MapContents id="Mymap"></MapContents>; // 이부분이 지도를 띄우게 될 부분.
+  render() {// 이부분이 지도를 띄우게 될 부분.
+    const {isLoading} = this.state;
+    return <MapContents id="Mymap"></MapContents>
   }
 }
 
