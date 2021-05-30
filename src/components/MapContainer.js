@@ -55,6 +55,7 @@ class MapContainer extends Component {
     }
   };
   getMap = () => {
+    var weatherData = -1;
     this.getLocation(() => {
       this.setState({ lat: nowlat, lon: nowlon });
       let container = document.getElementById("Mymap");
@@ -78,7 +79,57 @@ class MapContainer extends Component {
         radius: 1000,
         location: new kakao.maps.LatLng(nowlat, nowlon),
       });
-    });
+      return new Promise(function (resolve, reject) {
+        resolve({ latitude: nowlat, longitude: nowlon });
+      })
+      .then(function (result) {
+        console.log("promise에서 넘어온 데이터 : ", result);
+        fetch("http://localhost:3001/weather", { // 위도, 경도 정보를 바탕으로 날씨정보 가져옴
+          method: "post",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ lat: result.latitude, lon: result.longitude }),
+        })  // '날씨' 만 가져와 아래로 넘김
+          .then((res) => res.json())
+          .then((json) => {
+            console.log("클라이언트가 받은 값(날씨)은 : ", json);
+            weatherData = json;
+            return weatherData;
+          })
+          .then((data) => {
+            console.log("넘어온 데이터는 : ", data);
+            if (data === 0) { // 맑을 경우 디비 호출
+              fetch(`http://localhost:3001/database0`, { 
+                method: "post",
+                headers: {
+                  "content-type": "application/json",
+                },
+                body: JSON.stringify(),
+              })
+                .then((res) => res.json())
+                .then((json) => {
+                  console.log(json);
+                })
+            }
+            else { // 비/눈이 올 경우 디비 호출
+              fetch(`http://localhost:3001/database1`, {
+                method: "post",
+                headers: {
+                  "content-type": "application/json",
+                },
+                body: JSON.stringify(),
+              })
+                .then((res) => res.json())
+                .then((json) => {
+                  console.log(json);
+                })
+            }
+
+          })
+      })
+    })
+     
   };
   // 키워드 검색 완료 시 호출되는 콜백함수 입니다
   placesSearchCB = (data, status, pagination) => {

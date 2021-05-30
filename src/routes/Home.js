@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import MapContainer from "../components/MapContainer";
-import Weather from "../components/Weather";
 import "./Home.css";
 
 const Home = () => {
@@ -8,7 +7,6 @@ const Home = () => {
     <div>
       <header>
         <div>
-          <Weather />
           <h1>오늘은</h1>
           <div className="js-input">
             <span id="weather">비가 오는</span> <span id="day">일요일</span>
