@@ -24,9 +24,9 @@ class MapContainer extends Component {
     this.componentDidMount = this.componentDidMount.bind(this);
   }
 
-  sleep = (ms) => {
+  /*sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
-  };
+  };*/
 
   getLocation = (callback) => {
     if (navigator.geolocation) {
