@@ -16,6 +16,7 @@ class MapContainer extends Component {
       isLoading: true,
       lat: 37.506502,
       lon: 127.053617,
+      menus:[1, 2, 3],
     };
 
     this.getLocation = this.getLocation.bind(this);
@@ -23,9 +24,9 @@ class MapContainer extends Component {
     this.componentDidMount = this.componentDidMount.bind(this);
   }
 
-  sleep = (ms) => {
+  /*sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
-  };
+  };*/
 
   getLocation = (callback) => {
     if (navigator.geolocation) {
@@ -55,6 +56,7 @@ class MapContainer extends Component {
     }
   };
   getMap = () => {
+    var weatherData = -1;
     this.getLocation(() => {
       this.setState({ lat: nowlat, lon: nowlon });
       let container = document.getElementById("Mymap");
@@ -70,15 +72,107 @@ class MapContainer extends Component {
       var ps = new kakao.maps.services.Places();
 
       // 키워드로 장소를 검색합니다
-      ps.keywordSearch("닭갈비", this.placesSearchCB, {
-        radius: 1000,
-        location: new kakao.maps.LatLng(nowlat, nowlon),
-      });
-      ps.keywordSearch("칼국수", this.placesSearchCB, {
-        radius: 1000,
-        location: new kakao.maps.LatLng(nowlat, nowlon),
-      });
-    });
+      
+      return new Promise(function (resolve, reject) {
+        resolve({ latitude: nowlat, longitude: nowlon });
+      })
+      .then( (result) => {
+        console.log("promise에서 넘어온 데이터 : ", result);
+        fetch("http://localhost:3001/weather", { // 위도, 경도 정보를 바탕으로 날씨정보 가져옴
+          method: "post",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ lat: result.latitude, lon: result.longitude }),
+        })  // '날씨' 만 가져와 아래로 넘김
+          .then((res) => res.json())
+          .then((json) => {
+            console.log("클라이언트가 받은 값(날씨)은 : ", json);
+            weatherData = json;
+            return weatherData;
+          })
+          .then((data) => {
+            console.log("넘어온 데이터는 : ", data);
+            if (data === 0) { // 맑을 경우 디비 호출
+              fetch(`http://localhost:3001/database0`, { 
+                method: "post",
+                headers: {
+                  "content-type": "application/json",
+                },
+                body: JSON.stringify(),
+              })
+                .then((res) => res.json())
+                .then((json) => {
+                  console.log("출력되는 json : ", json);
+                  ps.keywordSearch(json[0].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[1].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[2].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[3].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[4].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                })
+                
+            }
+            else { // 비/눈이 올 경우 디비 호출
+              fetch(`http://localhost:3001/database1`, {
+                method: "post",
+                headers: {
+                  "content-type": "application/json",
+                },
+                body: JSON.stringify(),
+              })
+                .then((res) => res.json())
+                .then((json) => {
+                  console.log("출력되는 json : ", json);
+                  ps.keywordSearch(json[0].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[1].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[2].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[3].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  ps.keywordSearch(json[4].menu, this.placesSearchCB, {
+                    radius: 1000,
+                    location: new kakao.maps.LatLng(nowlat, nowlon),
+                  });
+                  this.menus = [json[0].menu, json[1].menu, json[2].menu, json[3].menu, json[4].menu];
+                  this.setState({isLoading: false});
+                })
+              
+                
+                // ps.keywordSearch("피자", this.placesSearchCB, {
+                //   radius: 1000,
+                //   location: new kakao.maps.LatLng(nowlat, nowlon),
+                // });  
+            }
+
+          })
+      })
+    })
+     
   };
   // 키워드 검색 완료 시 호출되는 콜백함수 입니다
   placesSearchCB = (data, status, pagination) => {
@@ -110,7 +204,10 @@ class MapContainer extends Component {
     kakao.maps.event.addListener(marker, "click", function () {
       // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
       infowindow.setContent(
-        `<div style="padding:5px;font-size:12px;"><a href="${place.place_url}" target="_blank">${place.place_name}</a></div>`
+        `<div style="padding:5px;font-size:12px;">
+        <a href="${place.place_url}" target="_blank">${place.place_name}</a><br>
+        <a href="${"http://map.naver.com/index.nhn?elng="+place.x+"&elat="+place.y+"&etext="+place.place_name+"&pathType=1"}" target="_blank"  style="color:green; text-decoration:underline">${place.place_name+"까지 길찾기"}</a>
+        </div>`
       );
       infowindow.open(map, marker);
     });
@@ -120,8 +217,9 @@ class MapContainer extends Component {
     this.getMap();
   }
 
-  render() {
-    return <MapContents id="Mymap"></MapContents>; // 이부분이 지도를 띄우게 될 부분.
+  render() {// 이부분이 지도를 띄우게 될 부분.
+    const {isLoading} = this.state;
+    return <MapContents id="Mymap"></MapContents>
   }
 }
 
