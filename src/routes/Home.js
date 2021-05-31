@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import MapContainer from "../components/MapContainer";
 import Weather from "../components/Weather";
 import Foodlist from "../components/Foodlist";
@@ -24,11 +24,6 @@ class Home extends React.Component {
         <header>
           <div>
             <Weather />
-            <h1>오늘은</h1>
-            <div className="js-input">
-              <span id="weather">비가 오는</span> <span id="day">일요일</span>
-            </div>
-            <h1 className="align-right">이네요.</h1>
           </div>
         </header>
         <div className="map-container">

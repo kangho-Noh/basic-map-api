@@ -11,7 +11,15 @@ class Weather extends React.Component {
     //this.getLocation(this.weather);
   }
   render() {
-    return <div></div>;
+    return (
+      <div>
+        <h1>오늘은</h1>
+        <div className="js-input">
+          <span id="weather">비가 오는</span> <span id="day">일요일</span>
+        </div>
+        <h1 className="align-right">이네요.</h1>
+      </div>
+    );
   }
 }
 
