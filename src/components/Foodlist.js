@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import "./Foodlist.css";
 
 //img의 alt와 title은 사진에 마우스 올렸을 때 나오는 제목 표시하기 위함
@@ -17,8 +16,8 @@ class Foodlist extends React.Component {
   render() {
     const {foodname} = this.props;
     return (
-      <div>
-        <span className="foodname">{foodname}</span>
+      <div className="foodList">
+        <span className="foodName">{foodname}</span>
       </div>
     );
   }

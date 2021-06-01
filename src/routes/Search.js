@@ -31,11 +31,77 @@ class Search extends React.Component {
       lat: 37.506502,
       lon: 127.053617,
       menus: [1, 2, 3, 4, 5],
+      weather: 1,
+      weatherStatement: "비가 오는 ",
+      season: this.getSeason(),
     };
-
+    //console.log("props", props);
+    //console.log("state", this.state);
+    //console.log("검색장소: ", props.location.state.placename);
     this.getLocation = this.getLocation.bind(this);
     this.getMap = this.getMap.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
+    this.decodeWeather = this.decodeWeather.bind(this);
+  }
+
+  decodeWeather = (weather) => {
+    let statement = "";
+    switch (weather) {
+      case 0:
+        statement = "화창한 ";
+        break;
+      case 1:
+        statement = "비가 오는 ";
+        break;
+      case 2:
+        statement = "진눈개비 오는 ";
+        break;
+      case 3:
+        statement = "눈 오는";
+        break;
+      case 4:
+        statement = "소나기 내리는 ";
+        break;
+      case 5:
+        statement = "빗방울이 떨어지는 ";
+        break;
+      case 6:
+        statement = "비바람이 몰아치는 ";
+        break;
+      case 7:
+        statement = "눈발이 거센 ";
+        break;
+    }
+    return statement;
+  };
+  
+  getSeason() {
+    const date = new Date();
+    const Month = (date.getMonth() + 1).toString();
+    var season = "";
+    switch (Month) {
+      case "12":
+      case "1":
+      case "2":
+        season = "겨울";
+        break;
+      case "3":
+      case "4":
+      case "5":
+        season = "봄";
+        break;
+      case "6":
+      case "7":
+      case "8":
+        season = "여름";
+        break;
+      case "9":
+      case "10":
+      case "11":
+        season = "가을";
+        break;
+    }
+    return season;
   }
 
   getLocation = (callback) => {
@@ -99,6 +165,9 @@ class Search extends React.Component {
           .then((json) => {
             console.log("클라이언트가 받은 값(날씨)은 : ", json);
             weatherData = json;
+            let statement = this.decodeWeather(weatherData);
+            this.setState({ weather: weatherData,
+            weatherStatement:  statement});
             return weatherData;
           })
           .then((data) => {
@@ -161,11 +230,6 @@ class Search extends React.Component {
                     });
                   }
                 });
-
-              // ps.keywordSearch("피자", this.placesSearchCB, {
-              //   radius: 1000,
-              //   location: new kakao.maps.LatLng(nowlat, nowlon),
-              // });
             }
           });
       });
@@ -230,20 +294,17 @@ class Search extends React.Component {
     this.getMap();
   }
   render() {
-    const { menus, lat, lon } = this.state;
-    const props = this.props;
-    console.log("검색장소: ", props.location.state.placename);
+    const { weatherStatement, season, menus, lat, lon } = this.state;
     return (
       <div>
         <header>
-          <div>
-            <Weather menus={menus} lat={lat} lon={lon} />
-          </div>
+          <Weather season={season} weatherStatement={weatherStatement} />
         </header>
         <div className="food-list">
           {menus.map((menu) => (
             <Foodlist foodname={menu} />
           ))}
+          <span className="">은 어떠세요?</span>
         </div>
         <div className="map-container">
           <div className="main">
@@ -255,7 +316,6 @@ class Search extends React.Component {
             <div className="sidebar">사이드바 영역입니다.</div>
           </div>
         </div>
-        <div className="footer">푸터 영역입니다.</div>
       </div>
     );
   }
