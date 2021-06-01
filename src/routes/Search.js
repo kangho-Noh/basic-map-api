@@ -75,12 +75,12 @@ class Search extends React.Component {
           nowlon = lonSum;
           callback();
         }
-        else{
+        else {
           console.log("search에서 error");
         }
       }
       places.keywordSearch(this.props.location.state.placename, callback2);
-      
+
     }
   };
   getMap = () => {
@@ -213,6 +213,8 @@ class Search extends React.Component {
     }
   };
 
+  
+
   // 지도에 마커를 표시하는 함수입니다
   displayMarker = (place, markerImage) => {
     // 마커를 생성하고 지도에 표시합니다
@@ -225,25 +227,34 @@ class Search extends React.Component {
     // 마커에 클릭이벤트를 등록합니다
     kakao.maps.event.addListener(marker, "click", function () {
       // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+      console.log(place)
       infowindow.setContent(
         `<div style="padding:5px;font-size:12px;">
         <a href="${place.place_url}" target="_blank">${place.place_name}</a><br>
-        <a href="${
-          "http://map.naver.com/index.nhn?elng=" +
-          place.x +
-          "&elat=" +
-          place.y +
-          "&etext=" +
-          place.place_name +
-          "&pathType=1"
-        }" target="_blank"  style="color:green; text-decoration:underline">${
-          place.place_name + "까지 길찾기"
+        <a href="${"http://map.naver.com/index.nhn?elng=" +
+        place.x +
+        "&elat=" +
+        place.y +
+        "&etext=" +
+        place.place_name +
+        "&pathType=1"
+        }" target="_blank"  style="color:green; text-decoration:underline">${place.place_name + "까지 길찾기"
         }</a>
-        </div>`
+        <a id="send-to-btn" href="#" onclick="sendTo('${place.place_name}', '${place.address_name}')" style="color:blue; text-decoration:underline">
+          나에게 카카오톡
+        </a>
+        </div>
+
+        
+        
+
+        `
       );
       infowindow.open(map, marker);
     });
   };
+  
+  
 
   componentDidMount() {
     this.getMap();

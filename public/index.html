@@ -27,6 +27,56 @@
     <title>Momokji</title>
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=%REACT_APP_KAKAOMAP_API%&libraries=services
 "></script>
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script>
+      Kakao.init('ccd09f07912e2180769580bc7d715a6d');
+      sendTo = (place, address) =>  {
+        Kakao.Auth.login({
+          scope: 'PROFILE,TALK_MESSAGE',
+          success: function() {
+            Kakao.API.request({
+              url: '/v2/api/talk/memo/default/send',
+              data: {
+                template_object: {
+                  object_type: 'location',
+                  address: address,
+                  address_title: place,
+                  content: {
+                    title: place,
+                    description: place+"를 추천해요!",
+                    image_url:
+                      'http://k.kakaocdn.net/dn/bSbH9w/btqgegaEDfW/vD9KKV0hEintg6bZT4v4WK/kakaolink40_original.png',
+                    link: {
+                      mobile_web_url: 'https://developers.kakao.com',
+                      web_url: 'https://developers.kakao.com',
+                    },
+                  },
+                  
+                  buttons: [
+                    {
+                      title: '알아 보기',
+                      link: {
+                        mobile_web_url: 'https://developers.kakao.com',
+                        web_url: 'https://developers.kakao.com',
+                      },
+                    },
+                  ],
+                },
+              },
+              success: function(res) {
+                alert('success: ' + JSON.stringify(res))
+              },
+              fail: function(err) {
+                alert('error: ' + JSON.stringify(err))
+              },
+            })
+          },
+          fail: function(err) {
+            alert('failed to login: ' + JSON.stringify(err))
+          },
+        })
+      }
+      </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
