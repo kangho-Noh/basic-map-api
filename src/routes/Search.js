@@ -26,6 +26,8 @@ var markerInd = 0;
 class Search extends React.Component {
   constructor(props) {
     super(props);
+    console.log("props : ", props.location.state);
+    // console.log("props : ", props.location.state.placename);
     this.state = {
       isLoading: true,
       lat: 37.506502,
@@ -39,34 +41,51 @@ class Search extends React.Component {
   }
 
   getLocation = (callback) => {
-    if (navigator.geolocation) {
-      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      navigator.geolocation.getCurrentPosition(function (position) {
-        nowlat = position.coords.latitude; // 위도
-        nowlon = position.coords.longitude; // 경도
-        console.log(nowlat, nowlon);
-        //var locPosition = new kakao.maps.LatLng(nowlat, nowlon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-        //message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
+    // console.log("넘어온 props : ", this.props.location.state);
+    if (this.props.location.state == undefined) { // 현재 위치 받아와야
+      if (navigator.geolocation) {
+        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+        navigator.geolocation.getCurrentPosition(function (position) {
+          nowlat = position.coords.latitude; // 위도
+          nowlon = position.coords.longitude; // 경도
+          console.log(nowlat, nowlon);
+          callback();
+        });
+      } else {
+        // HTML5의 GeoLocation을 사용할 수 없을때, 사용자가 위치정보 거부했을 땐
+        nowlat = 37.506502; // 위도
+        nowlon = 127.053617; // 경도
 
-        // 마커와 인포윈도우를 표시합니다
-        //displayMarker(locPosition, message);
         callback();
-        //return locPosition;
-      });
-    } else {
-      // HTML5의 GeoLocation을 사용할 수 없을때, 사용자가 위치정보 거부했을 땐
-      nowlat = 37.506502; // 위도
-      nowlon = 127.053617; // 경도커 표시 위치와 인포윈도우 내용을 설정합니다
-
-      //var locPosition = new kakao.maps.LatLng(37.506502, 127.053617);
-      //message = "geolocation을 사용할수 없어요..";
-
-      //displayMarker(locPosition, message);
-      callback();
+      }
+    }
+    else {
+      var places = new kakao.maps.services.Places();
+      var callback2 = function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          var step, latSum = 0, lonSum = 0; // 15개의 좌표를 평균내어 검색하자
+          for (step = 0; step < 15; step++) {
+            latSum += parseFloat(result[step].y);
+            lonSum += parseFloat(result[step].x);
+          }
+          latSum = String(latSum / 15);
+          lonSum = String(lonSum / 15);
+          console.log("구한 좌표 : ", latSum, lonSum);
+          nowlat = latSum;
+          nowlon = lonSum;
+          callback();
+        }
+        else{
+          console.log("search에서 error");
+        }
+      }
+      places.keywordSearch(this.props.location.state.placename, callback2);
+      
     }
   };
   getMap = () => {
     var weatherData = -1;
+
     this.getLocation(() => {
       this.setState({ lat: nowlat, lon: nowlon });
       let container = document.getElementById("Mymap");
@@ -232,7 +251,7 @@ class Search extends React.Component {
   render() {
     const { menus, lat, lon } = this.state;
     const props = this.props;
-    console.log("검색장소: ", props.location.state.placename);
+    // console.log("검색장소: ", props.location.state.placename);
     return (
       <div>
         <header>
