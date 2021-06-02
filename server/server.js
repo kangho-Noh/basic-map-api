@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+=======
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+>>>>>>> feature/search-kakao
 const express = require("express");
 const app = express();
 const port = 3001; // react의 기본값은 3000이니까 3000이 아닌 아무 수
@@ -7,7 +12,14 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const route = require("./routes/index");
 const mysql = require("mysql");
+<<<<<<< HEAD
 let moment = require("moment");
+=======
+// const env = require("dotenv");
+let moment = require("moment");
+// env.config();
+
+>>>>>>> feature/search-kakao
 //db연동 위해
 var connection = mysql.createConnection({
   host: "localhost",

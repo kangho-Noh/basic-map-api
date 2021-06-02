@@ -27,6 +27,56 @@
     <title>Momokji</title>
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=%REACT_APP_KAKAOMAP_API%&libraries=services
 "></script>
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script>
+      Kakao.init('ccd09f07912e2180769580bc7d715a6d');
+      sendTo = (place, address) =>  {
+        Kakao.Auth.login({
+          scope: 'PROFILE,TALK_MESSAGE',
+          success: function() {
+            Kakao.API.request({
+              url: '/v2/api/talk/memo/default/send',
+              data: {
+                template_object: {
+                  object_type: 'location',
+                  address: address,
+                  address_title: place,
+                  content: {
+                    title: place,
+                    description: "오늘은 "+place+" 어떠세요?",
+                    image_url:
+                      '',
+                    link: {
+                      mobile_web_url: 'https://map.kakao.com/link/search/'+place,
+                      web_url: 'https://map.kakao.com/link/search/'+place,
+                    },
+                  },
+                  
+                  buttons: [
+                    {
+                      title: '알아보기',
+                      link: {
+                        mobile_web_url: 'https://search.naver.com/search.naver?query='+place,
+                        web_url: 'https://search.naver.com/search.naver?query='+place,
+                      },
+                    },
+                  ],
+                },
+              },
+              success: function(res) {
+                alert('success: ' + JSON.stringify(res))
+              },
+              fail: function(err) {
+                alert('error: ' + JSON.stringify(err))
+              },
+            })
+          },
+          fail: function(err) {
+            alert('failed to login: ' + JSON.stringify(err))
+          },
+        })
+      }
+      </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
