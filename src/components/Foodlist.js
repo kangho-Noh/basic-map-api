@@ -14,7 +14,7 @@ class Foodlist extends React.Component {
   };
 
   render() {
-    const {foodname} = this.props;
+    const { foodname } = this.props;
     return (
       <div className="foodList">
         <span className="foodName">{foodname}</span>
@@ -22,6 +22,5 @@ class Foodlist extends React.Component {
     );
   }
 }
-
 
 export default Foodlist;

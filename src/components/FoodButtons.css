@@ -1,0 +1,9 @@
+.button-div {
+  display: inline;
+}
+.toggle-button {
+  margin: 10px 5px;
+}
+.switchoff{
+    opacity: 50%;
+}

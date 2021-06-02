@@ -2,7 +2,10 @@
 body {
   background-color: #facac0;
 }
-
+.buttons-container{
+  display: flex;
+  justify-content:center;
+}
 .map-container {
   width: 100%;
   display: flex;

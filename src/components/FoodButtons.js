@@ -1,27 +1,25 @@
-// import React from "react";
-// import PropTypes from "prop-types";
-// import "./Foodlist.css";
+import React from "react";
+import "./FoodButtons.css";
 
-// //img의 alt와 title은 사진에 마우스 올렸을 때 나오는 제목 표시하기 위함
-// //css를 하기 위해서 style={{}}를 사용할 수 있다.
-// class Foodlist extends React.Component {
-//   constructor(props) {
-//     super(props);
-//   }
+//img의 alt와 title은 사진에 마우스 올렸을 때 나오는 제목 표시하기 위함
+//css를 하기 위해서 style={{}}를 사용할 수 있다.
+class FoodButtons extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-//   clickEventHandler = (e) => {
-//     e.preventDefault();
-//     console.log("The button was clicked.");
-//   };
+  
 
-//   render() {
-//     const { foodname } = this.props;
-//     return (
-//       <div>
-//         <button className="toggle-button">{foodname}</button>
-//       </div>
-//     );
-//   }
-// }
+  render() {
+    const { foodname, clickEventHandler } = this.props;
+    return (
+      <div className="button-div">
+        <button className="toggle-button" onClick={clickEventHandler}>
+          {foodname}
+        </button>
+      </div>
+    );
+  }
+}
 
-// export default Foodlist;
+export default FoodButtons;

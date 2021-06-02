@@ -2,6 +2,7 @@ import React from "react";
 import MapContainer from "../components/MapContainer";
 import Weather from "../components/Weather";
 import Foodlist from "../components/Foodlist";
+import FoodButtons from "../components/FoodButtons";
 import "./Search.css";
 
 //images
@@ -22,6 +23,8 @@ const imageSrc = [mapmarker1, mapmarker2, mapmarker3, mapmarker4, mapmarker5],
 
 var markerInd = 0;
 //var markerImage = new kakao.maps.MarkerImage(imageSrc[0], imageSize);
+
+var markers = {};
 
 class Search extends React.Component {
   constructor(props) {
@@ -76,7 +79,7 @@ class Search extends React.Component {
     }
     return statement;
   };
-  
+
   getSeason() {
     const date = new Date();
     const Month = (date.getMonth() + 1).toString();
@@ -108,7 +111,8 @@ class Search extends React.Component {
 
   getLocation = (callback) => {
     // console.log("넘어온 props : ", this.props.location.state);
-    if (this.props.location.state == undefined) { // 현재 위치 받아와야
+    if (this.props.location.state == undefined) {
+      // 현재 위치 받아와야
       if (navigator.geolocation) {
         // GeoLocation을 이용해서 접속 위치를 얻어옵니다
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -124,12 +128,13 @@ class Search extends React.Component {
 
         callback();
       }
-    }
-    else {
+    } else {
       var places = new kakao.maps.services.Places();
       var callback2 = function (result, status) {
         if (status === kakao.maps.services.Status.OK) {
-          var step, latSum = 0, lonSum = 0; // 15개의 좌표를 평균내어 검색하자
+          var step,
+            latSum = 0,
+            lonSum = 0; // 15개의 좌표를 평균내어 검색하자
           for (step = 0; step < 15; step++) {
             latSum += parseFloat(result[step].y);
             lonSum += parseFloat(result[step].x);
@@ -140,13 +145,11 @@ class Search extends React.Component {
           nowlat = latSum;
           nowlon = lonSum;
           callback();
-        }
-        else {
+        } else {
           console.log("search에서 error");
         }
-      }
+      };
       places.keywordSearch(this.props.location.state.placename, callback2);
-
     }
   };
   getMap = () => {
@@ -185,8 +188,10 @@ class Search extends React.Component {
             console.log("클라이언트가 받은 값(날씨)은 : ", json);
             weatherData = json;
             let statement = this.decodeWeather(weatherData);
-            this.setState({ weather: weatherData,
-            weatherStatement:  statement});
+            this.setState({
+              weather: weatherData,
+              weatherStatement: statement,
+            });
             return weatherData;
           })
           .then((data) => {
@@ -204,7 +209,6 @@ class Search extends React.Component {
                 .then((json) => {
                   console.log("출력되는 json : ", json);
                   this.setState({
-                    isLoading: false,
                     menus: [
                       json[0].menu,
                       json[1].menu,
@@ -233,7 +237,6 @@ class Search extends React.Component {
                 .then((json) => {
                   console.log("출력되는 json : ", json);
                   this.setState({
-                    isLoading: false,
                     menus: [
                       json[0].menu,
                       json[1].menu,
@@ -261,67 +264,85 @@ class Search extends React.Component {
         imageSrc[markerInd],
         imageSize
       );
-      //console.log("data", data); //메뉴별 장소목록
-      // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-      // LatLngBounds 객체에 좌표를 추가합니다
-      var bounds = new kakao.maps.LatLngBounds();
+      const menuname = this.state.menus[markerInd];
 
-      for (var i = 0; i < data.length; i++) {
-        this.displayMarker(data[i], markerImage);
-        bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+      for (let i = 0; i < data.length; i++) {
+        this.displayMarker(data[i], markerImage, menuname);
       }
-      markerInd++; //음식별로 마커 색깔 다르게 하기 위해서 image 인덱스 조절
-      if (markerInd > 4) markerInd = 0;
-      // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-      //map.setBounds(bounds);
     }
+    //음식별로 마커 색깔 다르게 하기 위해서 image 인덱스 조절
+    markerInd++;
   };
 
-  
-
   // 지도에 마커를 표시하는 함수입니다
-  displayMarker = (place, markerImage) => {
+  displayMarker = (place, markerImage, menuname) => {
     // 마커를 생성하고 지도에 표시합니다
     var marker = new kakao.maps.Marker({
       map: map,
       position: new kakao.maps.LatLng(place.y, place.x),
       image: markerImage,
     });
-
+    if (markers[menuname]) {
+      markers[menuname].push(marker);
+    } else {
+      markers[menuname] = [marker];
+    }
     // 마커에 클릭이벤트를 등록합니다
     kakao.maps.event.addListener(marker, "click", function () {
       // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-      console.log(place)
       infowindow.setContent(
         `<div style="padding:5px;font-size:12px;">
         <a href="${place.place_url}" target="_blank">${place.place_name}</a><br>
-        <a href="${"http://map.naver.com/index.nhn?elng=" +
-        place.x +
-        "&elat=" +
-        place.y +
-        "&etext=" +
-        place.place_name +
-        "&pathType=1"
-        }" target="_blank"  style="color:green; text-decoration:underline">${place.place_name + "까지 길찾기"
+        <a href="${
+          "http://map.naver.com/index.nhn?elng=" +
+          place.x +
+          "&elat=" +
+          place.y +
+          "&etext=" +
+          place.place_name +
+          "&pathType=1"
+        }" target="_blank"  style="color:green; text-decoration:underline">${
+          place.place_name + "까지 길찾기"
         }</a><br>
-        <a id="send-to-btn" href="#" onclick="sendTo('${place.place_name}', '${place.address_name}')" style="color:blue; text-decoration:underline">
+        <a id="send-to-btn" href="#" onclick="sendTo('${place.place_name}', '${
+          place.address_name
+        }')" style="color:blue; text-decoration:underline">
           나에게 카카오톡
         </a>
         </div>
-
-        
-        
-
         `
       );
       infowindow.open(map, marker);
     });
   };
-  
-  
-
+  clickEventHandler = (e) => {
+    e.preventDefault();
+    const target = e.target;
+    const foodname = target.innerHTML;
+    const selectedMaker = markers[foodname];
+    console.log("markers", selectedMaker);
+    if (selectedMaker) {
+      if (selectedMaker[0].getVisible()) {
+        target.classList.add("switchoff");
+        for (var i = 0; i < selectedMaker.length; i++) {
+          selectedMaker[i].setVisible(false);
+        }
+      } else {
+        target.classList.remove("switchoff");
+        for (var i = 0; i < selectedMaker.length; i++) {
+          selectedMaker[i].setVisible(true);
+        }
+      }
+    } else {
+      console.log("해당 음식점 마커 없음");
+    }
+  };
   componentDidMount() {
     this.getMap();
+    console.log("Markers", markers);
+  }
+  componentDidUpdate() {
+    //console.log("UPDATE!!")
   }
   render() {
     const { weatherStatement, season, menus, lat, lon } = this.state;
@@ -339,6 +360,15 @@ class Search extends React.Component {
         <div className="map-container">
           <div className="main">
             <div className="contents">
+              <div className="buttons-container">
+                {menus.map((menu) => (
+                  <FoodButtons
+                    foodname={menu}
+                    clickEventHandler={this.clickEventHandler}
+                  />
+                ))}
+              </div>
+
               <div className="map_wrap">
                 <MapContainer menus={menus} lat={lat} lon={lon} />
               </div>
