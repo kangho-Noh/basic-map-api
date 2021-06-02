@@ -239,7 +239,7 @@ class Search extends React.Component {
         place.place_name +
         "&pathType=1"
         }" target="_blank"  style="color:green; text-decoration:underline">${place.place_name + "까지 길찾기"
-        }</a>
+        }</a><br>
         <a id="send-to-btn" href="#" onclick="sendTo('${place.place_name}', '${place.address_name}')" style="color:blue; text-decoration:underline">
           나에게 카카오톡
         </a>

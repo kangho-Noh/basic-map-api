@@ -43,21 +43,21 @@
                   address_title: place,
                   content: {
                     title: place,
-                    description: place+"를 추천해요!",
+                    description: "오늘은 "+place+" 어떠세요?",
                     image_url:
-                      'http://k.kakaocdn.net/dn/bSbH9w/btqgegaEDfW/vD9KKV0hEintg6bZT4v4WK/kakaolink40_original.png',
+                      '',
                     link: {
-                      mobile_web_url: 'https://developers.kakao.com',
-                      web_url: 'https://developers.kakao.com',
+                      mobile_web_url: 'https://map.kakao.com/link/search/'+place,
+                      web_url: 'https://map.kakao.com/link/search/'+place,
                     },
                   },
                   
                   buttons: [
                     {
-                      title: '알아 보기',
+                      title: '알아보기',
                       link: {
-                        mobile_web_url: 'https://developers.kakao.com',
-                        web_url: 'https://developers.kakao.com',
+                        mobile_web_url: 'https://search.naver.com/search.naver?query='+place,
+                        web_url: 'https://search.naver.com/search.naver?query='+place,
                       },
                     },
                   ],
