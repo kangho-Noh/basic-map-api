@@ -42,7 +42,7 @@
                   address: address,
                   address_title: place,
                   content: {
-                    title: place,
+                    title: place+"를 추천합니다!",
                     description: "오늘은 "+place+" 어떠세요?",
                     image_url:
                       '',
@@ -64,7 +64,7 @@
                 },
               },
               success: function(res) {
-                alert('success: ' + JSON.stringify(res))
+                alert('카카오톡으로 메세지를 전송했습니다.')
               },
               fail: function(err) {
                 alert('error: ' + JSON.stringify(err))

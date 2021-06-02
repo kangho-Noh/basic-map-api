@@ -324,13 +324,7 @@ class Search extends React.Component {
     this.getMap();
   }
   render() {
-<<<<<<< HEAD
     const { weatherStatement, season, menus, lat, lon } = this.state;
-=======
-    const { menus, lat, lon } = this.state;
-    const props = this.props;
-    // console.log("검색장소: ", props.location.state.placename);
->>>>>>> feature/search-kakao
     return (
       <div>
         <header>
