@@ -11,10 +11,10 @@ class FoodButtons extends React.Component {
   
 
   render() {
-    const { foodname, clickEventHandler } = this.props;
+    const { foodname, buttonClickEventHandler } = this.props;
     return (
       <div className="button-div">
-        <button className="toggle-button" onClick={clickEventHandler}>
+        <button id={foodname} className="toggle-button" onClick={buttonClickEventHandler}>
           {foodname}
         </button>
       </div>

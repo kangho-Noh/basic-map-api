@@ -18,13 +18,12 @@ var map;
 var nowlat, nowlon;
 var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
-const imageSrc = [mapmarker1, mapmarker2, mapmarker3, mapmarker4, mapmarker5],
-  imageSize = new kakao.maps.Size(50, 50); // 마커이미지의 크기입니다
+const imageSize = new kakao.maps.Size(50, 50); // 마커이미지의 크기입니다
 
 var markerInd = 0;
 //var markerImage = new kakao.maps.MarkerImage(imageSrc[0], imageSize);
 
-var markers = {};
+var markers = {}; //markers["메뉴이름"] = [마커1,마커2, ...]
 
 class Search extends React.Component {
   constructor(props) {
@@ -39,10 +38,8 @@ class Search extends React.Component {
       weather: 1,
       weatherStatement: "비가 오는 ",
       season: this.getSeason(),
+      imageSrc : [mapmarker1, mapmarker2, mapmarker3, mapmarker4, mapmarker5]
     };
-    //console.log("props", props);
-    //console.log("state", this.state);
-    //console.log("검색장소: ", props.location.state.placename);
     this.getLocation = this.getLocation.bind(this);
     this.getMap = this.getMap.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
@@ -110,8 +107,9 @@ class Search extends React.Component {
   }
 
   getLocation = (callback) => {
-    // console.log("넘어온 props : ", this.props.location.state);
-    if (this.props.location.state == undefined) {
+     //console.log("넘어온 props : ", this.props.location.state);
+     //const {placename} = this.props.location.state;
+    if (this.props.location.state == undefined ) {
       // 현재 위치 받아와야
       if (navigator.geolocation) {
         // GeoLocation을 이용해서 접속 위치를 얻어옵니다
@@ -152,6 +150,7 @@ class Search extends React.Component {
       places.keywordSearch(this.props.location.state.placename, callback2);
     }
   };
+
   getMap = () => {
     var weatherData = -1;
 
@@ -259,16 +258,22 @@ class Search extends React.Component {
   };
   // 키워드 검색 완료 시 호출되는 콜백함수 입니다
   placesSearchCB = (data, status, pagination) => {
+    const menuname = this.state.menus[markerInd];
+    const {imageSrc} = this.state;
     if (status === kakao.maps.services.Status.OK) {
       const markerImage = new kakao.maps.MarkerImage(
         imageSrc[markerInd],
         imageSize
       );
-      const menuname = this.state.menus[markerInd];
 
       for (let i = 0; i < data.length; i++) {
         this.displayMarker(data[i], markerImage, menuname);
       }
+    }
+    //검색 결과가 없는 메뉴의 경우 버튼 끄기
+    else {
+      if (document.getElementById(menuname))
+        document.getElementById(menuname).classList.add("switchoff");
     }
     //음식별로 마커 색깔 다르게 하기 위해서 image 인덱스 조절
     markerInd++;
@@ -282,14 +287,22 @@ class Search extends React.Component {
       position: new kakao.maps.LatLng(place.y, place.x),
       image: markerImage,
     });
+    //마커 음식이름별 dictionary로 저장
     if (markers[menuname]) {
       markers[menuname].push(marker);
     } else {
       markers[menuname] = [marker];
     }
-    // 마커에 클릭이벤트를 등록합니다
-    kakao.maps.event.addListener(marker, "click", function () {
-      // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+    kakao.maps.event.addListener(
+      marker,
+      "click",
+      this.markerClickEventHandler(marker, place)
+    );
+  };
+
+  markerClickEventHandler = (marker, place) => {
+    return function () {
+      // 마커에 클릭이벤트를 등록합니다
       infowindow.setContent(
         `<div style="padding:5px;font-size:12px;">
         <a href="${place.place_url}" target="_blank">${place.place_name}</a><br>
@@ -313,14 +326,16 @@ class Search extends React.Component {
         `
       );
       infowindow.open(map, marker);
-    });
+      console.log("place Clicked", place);
+      //클릭 시 사이드바 영역에 가게 정보 출력 기능 추가 예정
+    };
   };
-  clickEventHandler = (e) => {
+
+  buttonClickEventHandler = (e) => {
     e.preventDefault();
     const target = e.target;
     const foodname = target.innerHTML;
     const selectedMaker = markers[foodname];
-    console.log("markers", selectedMaker);
     if (selectedMaker) {
       if (selectedMaker[0].getVisible()) {
         target.classList.add("switchoff");
@@ -339,7 +354,6 @@ class Search extends React.Component {
   };
   componentDidMount() {
     this.getMap();
-    console.log("Markers", markers);
   }
   componentDidUpdate() {
     //console.log("UPDATE!!")
@@ -364,7 +378,7 @@ class Search extends React.Component {
                 {menus.map((menu) => (
                   <FoodButtons
                     foodname={menu}
-                    clickEventHandler={this.clickEventHandler}
+                    buttonClickEventHandler={this.buttonClickEventHandler}
                   />
                 ))}
               </div>
