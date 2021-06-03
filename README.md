@@ -22,4 +22,4 @@ momokji는 무엇을 먹을지 고민하는 분들을 위해 개발되었습니�
 - React
 - node.js (express)
 - MySQL
-- AWS(예정)
+- AWS EC2
