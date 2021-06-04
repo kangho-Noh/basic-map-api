@@ -29,7 +29,7 @@
 "></script>
     <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
     <script>
-      Kakao.init('ccd09f07912e2180769580bc7d715a6d');
+      Kakao.init("%REACT_APP_KAKAO_INIT%");
       sendTo = (place, address) =>  {
         Kakao.Auth.login({
           scope: 'PROFILE,TALK_MESSAGE',

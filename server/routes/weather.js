@@ -6,7 +6,7 @@ const weather = (_weather, callback) => {
     let _lon = _weather.lon;
     let _calcDate = calcDate();
     var url = 'http://apis.data.go.kr/1360000/VilageFcstInfoService/getVilageFcst';
-    var queryParams = '?' + encodeURIComponent('ServiceKey') + '=kr%2FQXx6vPof0PDy8c%2BYL6vB2U7M7rv%2ByDaBzN%2FJ1orHghEJnhIds2hOmt59WFhziYr0vvgFzsKAg1UlTpPLuQw%3D%3D'; /* Service Key*/
+    var queryParams = '?' + encodeURIComponent('ServiceKey') + process.env.WEATHER_KEY; /* Service Key*/
     queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /* */
     queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('10'); /* */
     queryParams += '&' + encodeURIComponent('dataType') + '=' + encodeURIComponent('JSON'); /* */

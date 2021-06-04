@@ -14,10 +14,10 @@ import mapmarker3 from "../img/mapmarker_3.png";
 import mapmarker4 from "../img/mapmarker_4.png";
 import mapmarker5 from "../img/mapmarker_5.png";
 
-require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+require("dotenv").config();
 
 var headers = {
-  Authorization: `KakaoAK 0c42141b20b618a7fab7800bd5c8799d`,
+  Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_REST_API_KEY}`,
 };
 //${process.env.REST_API_KEY}
 const { kakao } = window;
