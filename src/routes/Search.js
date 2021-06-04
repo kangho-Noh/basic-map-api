@@ -3,6 +3,7 @@ import MapContainer from "../components/MapContainer";
 import Weather from "../components/Weather";
 import Foodlist from "../components/Foodlist";
 import FoodButtons from "../components/FoodButtons";
+import request from "request";
 import "./Search.css";
 
 //images
@@ -11,6 +12,11 @@ import mapmarker2 from "../img/mapmarker_2.png";
 import mapmarker3 from "../img/mapmarker_3.png";
 import mapmarker4 from "../img/mapmarker_4.png";
 import mapmarker5 from "../img/mapmarker_5.png";
+import e from "cors";
+
+var headers = {
+  Authorization: "KakaoAK 0c42141b20b618a7fab7800bd5c8799d",
+};
 
 const { kakao } = window;
 
@@ -38,7 +44,7 @@ class Search extends React.Component {
       weather: 1,
       weatherStatement: "비가 오는 ",
       season: this.getSeason(),
-      imageSrc : [mapmarker1, mapmarker2, mapmarker3, mapmarker4, mapmarker5]
+      imageSrc: [mapmarker1, mapmarker2, mapmarker3, mapmarker4, mapmarker5],
     };
     this.getLocation = this.getLocation.bind(this);
     this.getMap = this.getMap.bind(this);
@@ -59,7 +65,7 @@ class Search extends React.Component {
         statement = "진눈개비 오는 ";
         break;
       case 3:
-        statement = "눈 오는";
+        statement = "눈 오는 ";
         break;
       case 4:
         statement = "소나기 내리는 ";
@@ -107,9 +113,9 @@ class Search extends React.Component {
   }
 
   getLocation = (callback) => {
-     //console.log("넘어온 props : ", this.props.location.state);
-     //const {placename} = this.props.location.state;
-    if (this.props.location.state == undefined ) {
+    //console.log("넘어온 props : ", this.props.location.state);
+    //const {placename} = this.props.location.state;
+    if (this.props.location.state == undefined) {
       // 현재 위치 받아와야
       if (navigator.geolocation) {
         // GeoLocation을 이용해서 접속 위치를 얻어옵니다
@@ -164,12 +170,6 @@ class Search extends React.Component {
 
       map = new window.kakao.maps.Map(container, options);
 
-      // 장소 검색 객체를 생성합니다
-      //console.log(kakao.maps);
-      var ps = new kakao.maps.services.Places();
-
-      // 키워드로 장소를 검색합니다
-
       return new Promise(function (resolve, reject) {
         resolve({ latitude: nowlat, longitude: nowlon });
       }).then((result) => {
@@ -193,90 +193,78 @@ class Search extends React.Component {
             });
             return weatherData;
           })
-          .then((data) => {
-            console.log("넘어온 데이터는 : ", data);
-            if (data === 0) {
-              // 맑을 경우 디비 호출
-              fetch(`http://localhost:3001/database0`, {
-                method: "post",
-                headers: {
-                  "content-type": "application/json",
-                },
-                body: JSON.stringify(),
-              })
-                .then((res) => res.json())
-                .then((json) => {
-                  console.log("출력되는 json : ", json);
-                  this.setState({
-                    menus: [
-                      json[0].menu,
-                      json[1].menu,
-                      json[2].menu,
-                      json[3].menu,
-                      json[4].menu,
-                    ],
-                  });
-                  for (let i = 0; i < 5; i++) {
-                    ps.keywordSearch(json[i].menu, this.placesSearchCB, {
-                      radius: 1000,
-                      location: new kakao.maps.LatLng(nowlat, nowlon),
-                    });
-                  }
-                });
-            } else {
-              // 비/눈이 올 경우 디비 호출
-              fetch(`http://localhost:3001/database1`, {
-                method: "post",
-                headers: {
-                  "content-type": "application/json",
-                },
-                body: JSON.stringify(),
-              })
-                .then((res) => res.json())
-                .then((json) => {
-                  console.log("출력되는 json : ", json);
-                  this.setState({
-                    menus: [
-                      json[0].menu,
-                      json[1].menu,
-                      json[2].menu,
-                      json[3].menu,
-                      json[4].menu,
-                    ],
-                  });
-                  for (let i = 0; i < 5; i++) {
-                    ps.keywordSearch(json[i].menu, this.placesSearchCB, {
-                      radius: 1000,
-                      location: new kakao.maps.LatLng(nowlat, nowlon),
-                    });
-                  }
-                });
-            }
+          .then((weather) => {
+            this.callFoodDB(weather);
           });
       });
     });
   };
-  // 키워드 검색 완료 시 호출되는 콜백함수 입니다
-  placesSearchCB = (data, status, pagination) => {
-    const menuname = this.state.menus[markerInd];
-    const {imageSrc} = this.state;
-    if (status === kakao.maps.services.Status.OK) {
-      const markerImage = new kakao.maps.MarkerImage(
-        imageSrc[markerInd],
-        imageSize
-      );
 
-      for (let i = 0; i < data.length; i++) {
-        this.displayMarker(data[i], markerImage, menuname);
+  callFoodDB = (weather) => {
+    //장소 객체 생성
+    var ps = new kakao.maps.services.Places();
+    console.log("넘어온 데이터는 : ", weather);
+    var rainy = 0;
+    if (weather) rainy = 1;
+    // 맑을 경우 디비 호출
+    fetch(`http://localhost:3001/database${rainy}`, {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log("출력되는 json : ", json);
+        this.setState({
+          menus: [
+            json[0].menu,
+            json[1].menu,
+            json[2].menu,
+            json[3].menu,
+            json[4].menu,
+          ],
+        });
+
+        for (var i = 0; i < 5; i++) {
+          var options = {
+            url: `https://dapi.kakao.com/v2/local/search/keyword.json?y=${nowlat}&x=${nowlon}&radius=1000&query=${json[i].menu}`,
+            headers: headers,
+          };
+
+          request(options, this.placesSearchCB);
+        }
+      });
+  };
+
+  // 키워드 검색 완료 시 호출되는 콜백함수 입니다
+  placesSearchCB = (error, response, body) => {
+    const { documents } = JSON.parse(body);
+    const menuname = JSON.parse(body).meta.same_name.keyword;
+    const { imageSrc } = this.state;
+    if (!error && response.statusCode == 200) {
+      console.log(`${menuname} 검색결과`, documents);
+      if (documents.length) {
+        const markerImage = new kakao.maps.MarkerImage(
+          imageSrc[markerInd],
+          imageSize
+        );
+        for (let i = 0; i < documents.length; i++) {
+          this.displayMarker(documents[i], markerImage, menuname);
+        }
+      } else {
+        console.log(`${menuname} 검색 결과가 없습니다`);
+        if (document.getElementById(menuname))
+          document.getElementById(menuname).classList.add("switchoff");
       }
     }
     //검색 결과가 없는 메뉴의 경우 버튼 끄기
     else {
-      if (document.getElementById(menuname))
-        document.getElementById(menuname).classList.add("switchoff");
+      console.log("카카오 REST API 실패");
     }
-    //음식별로 마커 색깔 다르게 하기 위해서 image 인덱스 조절
     markerInd++;
+    //음식별로 마커 색깔 다르게 하기 위해서 image 인덱스 조절
   };
 
   // 지도에 마커를 표시하는 함수입니다
@@ -326,7 +314,7 @@ class Search extends React.Component {
         `
       );
       infowindow.open(map, marker);
-      console.log("place Clicked", place);
+      //console.log("place Clicked", place);
       //클릭 시 사이드바 영역에 가게 정보 출력 기능 추가 예정
     };
   };
@@ -335,17 +323,19 @@ class Search extends React.Component {
     e.preventDefault();
     const target = e.target;
     const foodname = target.innerHTML;
-    const selectedMaker = markers[foodname];
-    if (selectedMaker) {
-      if (selectedMaker[0].getVisible()) {
+    const selectedMarker = markers[foodname];
+    console.log(foodname);
+    console.log(selectedMarker);
+    if (selectedMarker) {
+      if (selectedMarker[0].getVisible()) {
         target.classList.add("switchoff");
-        for (var i = 0; i < selectedMaker.length; i++) {
-          selectedMaker[i].setVisible(false);
+        for (var i = 0; i < selectedMarker.length; i++) {
+          selectedMarker[i].setVisible(false);
         }
       } else {
         target.classList.remove("switchoff");
-        for (var i = 0; i < selectedMaker.length; i++) {
-          selectedMaker[i].setVisible(true);
+        for (var i = 0; i < selectedMarker.length; i++) {
+          selectedMarker[i].setVisible(true);
         }
       }
     } else {
