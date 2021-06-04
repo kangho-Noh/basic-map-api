@@ -5,6 +5,7 @@ import Foodlist from "../components/Foodlist";
 import FoodButtons from "../components/FoodButtons";
 import request from "request";
 import "./Search.css";
+import path from "path";
 
 //images
 import mapmarker1 from "../img/mapmarker_1.png";
@@ -12,12 +13,13 @@ import mapmarker2 from "../img/mapmarker_2.png";
 import mapmarker3 from "../img/mapmarker_3.png";
 import mapmarker4 from "../img/mapmarker_4.png";
 import mapmarker5 from "../img/mapmarker_5.png";
-import e from "cors";
+
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
 var headers = {
-  Authorization: "KakaoAK 0c42141b20b618a7fab7800bd5c8799d",
+  Authorization: `KakaoAK 0c42141b20b618a7fab7800bd5c8799d`,
 };
-
+//${process.env.REST_API_KEY}
 const { kakao } = window;
 
 var map;
@@ -240,12 +242,12 @@ class Search extends React.Component {
 
   // 키워드 검색 완료 시 호출되는 콜백함수 입니다
   placesSearchCB = (error, response, body) => {
-    const { documents } = JSON.parse(body);
-    const menuname = JSON.parse(body).meta.same_name.keyword;
     const { imageSrc } = this.state;
     if (!error && response.statusCode == 200) {
-      console.log(`${menuname} 검색결과`, documents);
+      const { documents } = JSON.parse(body);
+      const menuname = JSON.parse(body).meta.same_name.keyword;
       if (documents.length) {
+        console.log(`${menuname} 검색결과`, documents);
         const markerImage = new kakao.maps.MarkerImage(
           imageSrc[markerInd],
           imageSize

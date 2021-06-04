@@ -23,3 +23,18 @@ momokji는 무엇을 먹을지 고민하는 분들을 위해 개발되었습니�
 - node.js (express)
 - MySQL
 - AWS EC2
+
+## .env 파일 작성요령
+
+```
+DB_PASS= {MySQL Password}
+REACT_APP_KAKAOMAP_API = {KAKAO JavaScript API KEY}
+REST_API_KEY = {KAKAO REST API KEY}
+```
+
+## DATABASE(MySQL) 설정 방법
+
+- connection file location
+  /momokji/server/server.js
+
+(.sql 파일 추가예정)
