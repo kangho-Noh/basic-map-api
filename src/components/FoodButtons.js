@@ -8,13 +8,28 @@ class FoodButtons extends React.Component {
     super(props);
   }
 
-  
+  setButtonColor() {
+    const { buttonIndex } = this.props;
+    if (buttonIndex.length) {
+      console.log(buttonIndex);
+      for (let i = 0; i < buttonIndex.length; i++) {
+        let btn = document.getElementById(buttonIndex[i]);
+        btn.classList.add(`button_${i}`);
+      }
+    }
+  }
 
   render() {
+    this.setButtonColor();
     const { foodname, buttonClickEventHandler } = this.props;
+
     return (
       <div className="button-div">
-        <button id={foodname} className="toggle-button" onClick={buttonClickEventHandler}>
+        <button
+          id={foodname}
+          className="toggle-button"
+          onClick={buttonClickEventHandler}
+        >
           {foodname}
         </button>
       </div>

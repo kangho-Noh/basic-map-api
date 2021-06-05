@@ -4,6 +4,7 @@ import Weather from "../components/Weather";
 import Foodlist from "../components/Foodlist";
 import FoodButtons from "../components/FoodButtons";
 import request from "request";
+import "./reset.css";
 import "./Search.css";
 import path from "path";
 
@@ -32,6 +33,7 @@ var markerInd = 0;
 //var markerImage = new kakao.maps.MarkerImage(imageSrc[0], imageSize);
 
 var markers = {}; //markers["메뉴이름"] = [마커1,마커2, ...]
+var buttonInd = [];
 
 class Search extends React.Component {
   constructor(props) {
@@ -39,7 +41,7 @@ class Search extends React.Component {
     console.log("props : ", props.location.state);
     // console.log("props : ", props.location.state.placename);
     this.state = {
-      isLoading: true,
+      isLoading: false,
       lat: 37.506502,
       lon: 127.053617,
       menus: [1, 2, 3, 4, 5],
@@ -47,6 +49,7 @@ class Search extends React.Component {
       weatherStatement: "비가 오는 ",
       season: this.getSeason(),
       imageSrc: [mapmarker1, mapmarker2, mapmarker3, mapmarker4, mapmarker5],
+      buttonIndex: [], //버튼 색깔 마커 색깔 일치시키기 위함
     };
     this.getLocation = this.getLocation.bind(this);
     this.getMap = this.getMap.bind(this);
@@ -229,7 +232,7 @@ class Search extends React.Component {
           ],
         });
 
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < json.length; i++) {
           var options = {
             url: `https://dapi.kakao.com/v2/local/search/keyword.json?y=${nowlat}&x=${nowlon}&radius=1000&query=${json[i].menu}`,
             headers: headers,
@@ -246,6 +249,12 @@ class Search extends React.Component {
     if (!error && response.statusCode == 200) {
       const { documents } = JSON.parse(body);
       const menuname = JSON.parse(body).meta.same_name.keyword;
+      buttonInd.push(menuname);
+      if (markerInd == 4) {
+        this.setState({
+          buttonIndex: buttonInd,
+        });
+      }
       if (documents.length) {
         console.log(`${menuname} 검색결과`, documents);
         const markerImage = new kakao.maps.MarkerImage(
@@ -326,8 +335,6 @@ class Search extends React.Component {
     const target = e.target;
     const foodname = target.innerHTML;
     const selectedMarker = markers[foodname];
-    console.log(foodname);
-    console.log(selectedMarker);
     if (selectedMarker) {
       if (selectedMarker[0].getVisible()) {
         target.classList.add("switchoff");
@@ -351,7 +358,8 @@ class Search extends React.Component {
     //console.log("UPDATE!!")
   }
   render() {
-    const { weatherStatement, season, menus, lat, lon } = this.state;
+    const { weatherStatement, season, menus, lat, lon, buttonIndex } =
+      this.state;
     return (
       <div>
         <header>
@@ -371,6 +379,7 @@ class Search extends React.Component {
                   <FoodButtons
                     foodname={menu}
                     buttonClickEventHandler={this.buttonClickEventHandler}
+                    buttonIndex={buttonIndex}
                   />
                 ))}
               </div>

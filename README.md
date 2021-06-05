@@ -27,9 +27,12 @@ momokji는 무엇을 먹을지 고민하는 분들을 위해 개발되었습니�
 ## .env 파일 작성요령
 
 ```
-DB_PASS= {MySQL Password}
-REACT_APP_KAKAOMAP_API = {KAKAO JavaScript API KEY}
-REST_API_KEY = {KAKAO REST API KEY}
+DB_PASS = {MySQL Password}
+
+REACT_APP_KAKAOMAP_API = {Kakao JavaScript API Key}
+REACT_APP_KAKAO_REST_API_KEY = {Kakao REST API Key}
+REACT_APP_KAKAO_INIT = {Kakao REST API Key}
+WEATHER_KEY = {Weather API key} (수정필요)
 ```
 
 ## DATABASE(MySQL) 설정 방법

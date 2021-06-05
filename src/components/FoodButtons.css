@@ -2,8 +2,36 @@
   display: inline;
 }
 .toggle-button {
+  border-radius: 5px;
+  color: white;
   margin: 10px 5px;
 }
-.switchoff{
-    opacity: 50%;
+.button_0 {
+  background-color: #dc1e25;
+  border-color: #dc1e25;
+}
+
+.button_1 {
+  background-color: #ff7f27;
+  border-color: #ff7f27;
+}
+
+.button_2 {
+  background-color: #ffca18;
+  border-color: #ffca18;
+}
+
+.button_3 {
+  background-color: #0ed145;
+  border-color: #0ed145;
+}
+.button_4 {
+  background-color: #00a8f3;
+  border-color: #00a8f3;
+}
+
+.switchoff {
+  background-color: white;
+  color: gray;
+  opacity: 50%;
 }
