@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "semantic-ui-css/semantic.min.css";
 import "./Main.css";
-import 'semantic-ui-css/semantic.min.css';
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -12,19 +12,20 @@ class Main extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
   handleChange = (e) => {
-    this.setState({placename: e.target.value})
+    this.setState({ placename: e.target.value });
   };
 
   render() {
     const { placename } = this.state;
     return (
-      <div class="container">
-        <div class="title_container">
-          <p class="title">오늘 뭐 먹지?</p>
+      <div className="container">
+        <div className="title_container">
+          <p className="title">오늘 뭐 먹지?</p>
         </div>
-        <div class="search_container">
-          <div class="search_input ui input">
-            <input style={{width:200, height:40}}             
+        <div className="search_container">
+          <div className="search_input ui input">
+            <input
+              style={{ width: 200, height: 40 }}
               placeholder="예) 영통동, 강남역"
               type="text"
               onChange={this.handleChange}
@@ -36,13 +37,23 @@ class Main extends React.Component {
               state: { placename },
             }}
           >
-            <button style={{width: 130, height:40}} class="search_button ui inverted orange button">장소로 검색하기</button>
+            <button
+              style={{ width: 130, height: 40 }}
+              className="button search_button ui inverted orange"
+            >
+              장소로 검색하기
+            </button>
           </Link>
         </div>
-
-        <div class="nowloc_container">
+        <div className="or">OR</div>
+        <div className="nowloc_container">
           <Link to="search">
-            <button style={{width: 340, height:40}} class="nowloc_button ui orange button">현재 위치로 검색하기</button>
+            <button
+              style={{ width: 340, height: 40 }}
+              className="nowloc_button ui orange button"
+            >
+              현재 위치로 검색하기
+            </button>
           </Link>
         </div>
       </div>

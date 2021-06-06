@@ -1,36 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@900&display=swap");
 
-.container{
-    text-align: center;
-    margin-top: 120px;
-}
-
-.title_container{
-    /* background-color: red; */
-}
-.title{
-    font-size: 50px;
-    font-weight: bold;
-    font-family: 'Noto Sans KR', sans-serif;
+.container {
+  text-align: center;
+  margin-top: 120px;
 }
 
-.search_container{
-    margin-top:60px;
+.title_container {
+  /* background-color: red; */
 }
-.search_input{
-    /* margin:10px; */
-    margin-right:10px;
-}
-.search_button{
-    /* margin:10px; */
-    /* margin-left:10px; */
+.title {
+  font-size: 50px;
+  font-weight: bold;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
-
-.nowloc_container{
-    /* margin:10px; */
-    margin-top:20px;
+.search_container {
+  margin-top: 60px;
 }
-.nowloc_button{
-    /* margin:10px; */
+.search_input {
+  /* margin:10px; */
+  margin-right: 10px;
+}
+.search_button {
+  /* margin:10px; */
+  /* margin-left:10px; */
+  font-size: 9px;
+}
+
+.nowloc_container {
+  /* margin:10px; */
+  margin-top: 20px;
+}
+.nowloc_button {
+  /* margin:10px; */
+}
+
+.or {
+  margin-top: 15px;
+  color: gray;
 }
