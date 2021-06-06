@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import "./MapContainer.css";
 
 class MapContainer extends Component {
   constructor(props) {

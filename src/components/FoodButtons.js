@@ -11,7 +11,7 @@ class FoodButtons extends React.Component {
   setButtonColor() {
     const { buttonIndex } = this.props;
     if (buttonIndex.length) {
-      console.log(buttonIndex);
+      //console.log(buttonIndex);
       for (let i = 0; i < buttonIndex.length; i++) {
         let btn = document.getElementById(buttonIndex[i]);
         btn.classList.add(`button_${i}`);

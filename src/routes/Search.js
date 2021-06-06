@@ -1,12 +1,17 @@
+//Modules
 import React from "react";
+import request from "request";
+
+//.css Files
+import "./reset.css";
+import "./Search.css";
+
+//Components
 import MapContainer from "../components/MapContainer";
 import Weather from "../components/Weather";
 import Foodlist from "../components/Foodlist";
 import FoodButtons from "../components/FoodButtons";
-import request from "request";
-import "./reset.css";
-import "./Search.css";
-import path from "path";
+import Sidebar from "../components/Sidebar";
 
 //images
 import mapmarker1 from "../img/mapmarker_1.png";
@@ -50,11 +55,16 @@ class Search extends React.Component {
       season: this.getSeason(),
       imageSrc: [mapmarker1, mapmarker2, mapmarker3, mapmarker4, mapmarker5],
       buttonIndex: [], //버튼 색깔 마커 색깔 일치시키기 위함
+      sidebarInfo: {},
     };
     this.getLocation = this.getLocation.bind(this);
     this.getMap = this.getMap.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.decodeWeather = this.decodeWeather.bind(this);
+    this.getSeason = this.getSeason.bind(this);
+    this.callFoodDB = this.callFoodDB.bind(this);
+    this.placesSearchCB = this.placesSearchCB.bind(this);
+    this.displayMarker = this.displayMarker.bind(this);
   }
 
   decodeWeather = (weather) => {
@@ -174,7 +184,9 @@ class Search extends React.Component {
       };
 
       map = new window.kakao.maps.Map(container, options);
-
+      kakao.maps.event.addListener(map, "click", function (mouseEvent) {
+        infowindow.close();
+      });
       return new Promise(function (resolve, reject) {
         resolve({ latitude: nowlat, longitude: nowlon });
       }).then((result) => {
@@ -292,28 +304,42 @@ class Search extends React.Component {
     } else {
       markers[menuname] = [marker];
     }
-    kakao.maps.event.addListener(
-      marker,
-      "click",
-      this.markerClickEventHandler(marker, place)
-    );
-  };
-
-  markerClickEventHandler = (marker, place) => {
-    return function () {
+    kakao.maps.event.addListener(marker, "click", () => {
+      document.getElementById("sidebar").classList.remove("hide");
+      //Sidebar Info 수정
+      this.setState({
+        sidebarInfo: {
+          id: place.id,
+          place_name: place.place_name,
+          address: place.address_name,
+          distance: place.distance,
+          phone: place.phone,
+          place_url: place.place_url,
+        },
+      });
       // 마커에 클릭이벤트를 등록합니다
       infowindow.setContent(
         `<div style="font-size:12px; justify-content: center; width:fit-content">
-          <a href="${place.place_url}" target="_blank">${place.place_name}</a><br>
+          <a href="${place.place_url}" target="_blank">${
+          place.place_name
+        }</a><br>
           
           <div style="display: inline-block;">
-            <a href="${"http://map.naver.com/index.nhn?elng=" + place.x + "&elat=" + place.y +
-              "&etext=" + place.place_name + "&pathType=1"}" target="_blank"
-               style="color:green; text-decoration:underline; text-align:center">${
-              "길찾기"
-            }</a>
-            <a id="send-to-btn" href="#" onclick="sendTo('${place.place_name}', '${place.address_name
-            }')" style="color:blue; text-decoration:underline; text-align:center">
+            <a href="${
+              "http://map.naver.com/index.nhn?elng=" +
+              place.x +
+              "&elat=" +
+              place.y +
+              "&etext=" +
+              place.place_name +
+              "&pathType=1"
+            }" target="_blank"
+               style="color:green; text-decoration:underline; text-align:center">${"길찾기"}</a>
+            <a id="send-to-btn" href="#" onclick="sendTo('${
+              place.place_name
+            }', '${
+          place.address_name
+        }')" style="color:blue; text-decoration:underline; text-align:center">
               나에게 카카오톡
             </a>
           </div>
@@ -321,13 +347,11 @@ class Search extends React.Component {
         `
       );
       infowindow.open(map, marker);
-      //console.log("place Clicked", place);
-      //클릭 시 사이드바 영역에 가게 정보 출력 기능 추가 예정
-    };
+    });
   };
-
   buttonClickEventHandler = (e) => {
     e.preventDefault();
+    infowindow.close();
     const target = e.target;
     const foodname = target.innerHTML;
     const selectedMarker = markers[foodname];
@@ -354,8 +378,15 @@ class Search extends React.Component {
     //console.log("UPDATE!!")
   }
   render() {
-    const { weatherStatement, season, menus, lat, lon, buttonIndex } =
-      this.state;
+    const {
+      sidebarInfo,
+      weatherStatement,
+      season,
+      menus,
+      lat,
+      lon,
+      buttonIndex,
+    } = this.state;
     return (
       <div class="container">
         <header class="title2">
@@ -384,7 +415,9 @@ class Search extends React.Component {
                 <MapContainer menus={menus} lat={lat} lon={lon} />
               </div>
             </div>
-            <div className="sidebar">사이드바 영역입니다.</div>
+            <div id="sidebar" className="sidebar hide">
+              <Sidebar sidebarInfo={sidebarInfo} />
+            </div>
           </div>
         </div>
       </div>
