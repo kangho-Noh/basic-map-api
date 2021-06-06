@@ -126,6 +126,7 @@ h1 {
     margin-right: 0px;
   }
   .main .sidebar {
+    padding: 10px;
     min-height: 0;
     /* border-radius: 5px; */
     box-shadow: 2px 2px 5px gray;
@@ -292,4 +293,8 @@ h1 {
   font-weight: bold;
   cursor: default;
   color: #777;
+}
+
+.hide {
+  display: none;
 }
