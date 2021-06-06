@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 .button-div {
   display: inline;
 }
@@ -5,6 +6,9 @@
   border-radius: 5px;
   color: white;
   margin: 10px 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 .button_0 {
   background-color: #dc1e25;

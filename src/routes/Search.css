@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
 
 body {
   line-height: 1;
@@ -34,6 +35,7 @@ body {
   margin-top: 10px;
 }
 .map-container {
+  margin-top: 20px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -59,6 +61,27 @@ h1 {
 }
 #day {
 }
+
+.title2{
+  /* margin:30px; */
+  margin-bottom:30px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+}
+.food-list{
+  
+  justify-content: center;
+  /* background-color: red; */
+}
+.howabout{
+  margin-top: 10px;
+  
+  font-size: 25px;
+  text-align: center;
+  font-weight: 500;
+  font-family: 'Noto Sans KR', sans-serif;
+}
 .js-input {
   text-align: center;
 }
@@ -74,19 +97,19 @@ h1 {
 }
 
 .main .contents {
-  border-radius: 5px;
+  border-radius: 20px;
   box-shadow: 2px 2px 5px gray;
   background-color: rgb(255, 255, 255);
 
   min-height: 500px;
   background-color: white;
-  margin-right: 10px;
+  margin-right: 20px;
 }
 
 .main .sidebar {
   min-height: 500px;
   background-color: white;
-  border-radius: 5px;
+  border-radius: 20px;
   box-shadow: 2px 2px 5px gray;
 }
 
@@ -106,7 +129,7 @@ h1 {
   }
   .main .sidebar {
     min-height: 0;
-    border-radius: 5px;
+    /* border-radius: 5px; */
     box-shadow: 2px 2px 5px gray;
   }
 }

@@ -361,15 +361,15 @@ class Search extends React.Component {
     const { weatherStatement, season, menus, lat, lon, buttonIndex } =
       this.state;
     return (
-      <div>
-        <header>
+      <div class="container">
+        <header class="title2">
           <Weather season={season} weatherStatement={weatherStatement} />
         </header>
-        <div className="food-list">
+        <div class="food-list">
           {menus.map((menu) => (
             <Foodlist foodname={menu} />
           ))}
-          <span className="">은 어떠세요?</span>
+          <p class="howabout">은 어떠세요?</p>
         </div>
         <div className="map-container">
           <div className="main">

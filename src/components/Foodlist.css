@@ -1,9 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
 .foodList {
   display: flex;
   justify-content: center;
 }
 
 .foodName {
-  font-size: 15px;
+  font-size: 27px;
+  line-height:150%;
+  font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
 }
