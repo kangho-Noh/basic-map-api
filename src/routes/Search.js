@@ -303,24 +303,20 @@ class Search extends React.Component {
     return function () {
       // 마커에 클릭이벤트를 등록합니다
       infowindow.setContent(
-        `<div style="padding:5px;font-size:12px;">
-        <a href="${place.place_url}" target="_blank">${place.place_name}</a><br>
-        <a href="${
-          "http://map.naver.com/index.nhn?elng=" +
-          place.x +
-          "&elat=" +
-          place.y +
-          "&etext=" +
-          place.place_name +
-          "&pathType=1"
-        }" target="_blank"  style="color:green; text-decoration:underline">${
-          place.place_name + "까지 길찾기"
-        }</a><br>
-        <a id="send-to-btn" href="#" onclick="sendTo('${place.place_name}', '${
-          place.address_name
-        }')" style="color:blue; text-decoration:underline">
-          나에게 카카오톡
-        </a>
+        `<div style="font-size:12px; justify-content: center; width:fit-content">
+          <a href="${place.place_url}" target="_blank">${place.place_name}</a><br>
+          
+          <div style="display: inline-block;">
+            <a href="${"http://map.naver.com/index.nhn?elng=" + place.x + "&elat=" + place.y +
+              "&etext=" + place.place_name + "&pathType=1"}" target="_blank"
+               style="color:green; text-decoration:underline; text-align:center">${
+              "길찾기"
+            }</a>
+            <a id="send-to-btn" href="#" onclick="sendTo('${place.place_name}', '${place.address_name
+            }')" style="color:blue; text-decoration:underline; text-align:center">
+              나에게 톡
+            </a>
+          </div>
         </div>
         `
       );

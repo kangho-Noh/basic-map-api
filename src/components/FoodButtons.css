@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 .button-div {
   display: inline;
 }
@@ -7,31 +7,33 @@
   color: white;
   margin: 10px 5px;
   padding-top: 5px;
-  padding-bottom: 5px;
+  padding-bottom: 7px;
+  font-size:12px;
+  font-weight: 500;
   font-family: 'Noto Sans KR', sans-serif;
 }
 .button_0 {
-  background-color: #dc1e25;
-  border-color: #dc1e25;
+  background-color: #dc4f4f;
+  border-color: #dc4f4f;
 }
 
 .button_1 {
-  background-color: #ff7f27;
-  border-color: #ff7f27;
+  background-color: #f29859;
+  border-color: #f29859;
 }
 
 .button_2 {
-  background-color: #ffca18;
-  border-color: #ffca18;
+  background-color: #54cc9d;
+  border-color: #54cc9d;
 }
 
 .button_3 {
-  background-color: #0ed145;
-  border-color: #0ed145;
+  background-color: #4aa8dd;
+  border-color: #4aa8dd;
 }
 .button_4 {
-  background-color: #00a8f3;
-  border-color: #00a8f3;
+  background-color: #6f53a3;
+  border-color: #6f53a3;
 }
 
 .switchoff {
