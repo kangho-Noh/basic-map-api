@@ -46,7 +46,7 @@ class Search extends React.Component {
       lon: 127.053617,
       menus: [1, 2, 3, 4, 5],
       weather: 1,
-      weatherStatement: "비가 오는 ",
+      weatherStatement: "이번 ",
       season: this.getSeason(),
       imageSrc: [mapmarker1, mapmarker2, mapmarker3, mapmarker4, mapmarker5],
       buttonIndex: [], //버튼 색깔 마커 색깔 일치시키기 위함
@@ -314,7 +314,7 @@ class Search extends React.Component {
             }</a>
             <a id="send-to-btn" href="#" onclick="sendTo('${place.place_name}', '${place.address_name
             }')" style="color:blue; text-decoration:underline; text-align:center">
-              나에게 톡
+              나에게 카카오톡
             </a>
           </div>
         </div>
