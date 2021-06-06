@@ -91,6 +91,9 @@ h1 {
   width: 60%;
   margin: 10px 30px;
   display: grid;
+  grid-template-columns: 1fr 0fr;
+}
+.marker-clicked {
   grid-template-columns: 3fr 1fr;
 }
 
@@ -103,15 +106,18 @@ h1 {
   background-color: white;
   margin-right: 20px;
 }
-
 .main .sidebar {
+  visibility: hidden;
   min-height: 500px;
   background-color: white;
   border-radius: 20px;
   box-shadow: 2px 2px 5px gray;
 }
 
-@media (max-width: 600px) {
+.main > .show {
+  visibility: visible;
+}
+@media (max-width: 1000px) {
   /*가로 너비가 600px 이하일 때 아래 스타일 적용*/
   header {
     width: auto;
@@ -293,8 +299,4 @@ h1 {
   font-weight: bold;
   cursor: default;
   color: #777;
-}
-
-.hide {
-  display: none;
 }

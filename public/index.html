@@ -2,7 +2,7 @@
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" href="%PUBLIC_URL%/momokji.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
@@ -30,53 +30,57 @@
     <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
     <script>
       Kakao.init("%REACT_APP_KAKAO_INIT%");
-      sendTo = (place, address) =>  {
+      sendTo = (place, address) => {
         Kakao.Auth.login({
-          scope: 'PROFILE,TALK_MESSAGE',
-          success: function() {
+          scope: "PROFILE,TALK_MESSAGE",
+          success: function () {
             Kakao.API.request({
-              url: '/v2/api/talk/memo/default/send',
+              url: "/v2/api/talk/memo/default/send",
               data: {
                 template_object: {
-                  object_type: 'location',
+                  object_type: "location",
                   address: address,
                   address_title: place,
                   content: {
-                    title: place+"를 추천합니다!",
-                    description: "오늘은 "+place+" 어떠세요?",
-                    image_url:
-                      '',
+                    title: place + "를 추천합니다!",
+                    description: "오늘은 " + place + " 어떠세요?",
+                    image_url: "",
                     link: {
-                      mobile_web_url: 'https://map.kakao.com/link/search/'+place,
-                      web_url: 'https://map.kakao.com/link/search/'+place,
+                      mobile_web_url:
+                        "https://map.kakao.com/link/search/" + place,
+                      web_url: "https://map.kakao.com/link/search/" + place,
                     },
                   },
-                  
+
                   buttons: [
                     {
-                      title: '알아보기',
+                      title: "알아보기",
                       link: {
-                        mobile_web_url: 'https://search.naver.com/search.naver?query='+place,
-                        web_url: 'https://search.naver.com/search.naver?query='+place,
+                        mobile_web_url:
+                          "https://search.naver.com/search.naver?query=" +
+                          place,
+                        web_url:
+                          "https://search.naver.com/search.naver?query=" +
+                          place,
                       },
                     },
                   ],
                 },
               },
-              success: function(res) {
-                alert('카카오톡으로 메세지를 전송했습니다.')
+              success: function (res) {
+                alert("카카오톡으로 메세지를 전송했습니다.");
               },
-              fail: function(err) {
-                alert('권한을 허용해주세요.');
+              fail: function (err) {
+                alert("권한을 허용해주세요.");
               },
-            })
+            });
           },
-          fail: function(err) {
-            alert('failed to login: ' + JSON.stringify(err))
+          fail: function (err) {
+            alert("failed to login: " + JSON.stringify(err));
           },
-        })
-      }
-      </script>
+        });
+      };
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

@@ -305,7 +305,8 @@ class Search extends React.Component {
       markers[menuname] = [marker];
     }
     kakao.maps.event.addListener(marker, "click", () => {
-      document.getElementById("sidebar").classList.remove("hide");
+      document.getElementById("sidebar").classList.add("show");
+      document.getElementById("main").classList.add("marker-clicked");
       //Sidebar Info 수정
       this.setState({
         sidebarInfo: {
@@ -388,18 +389,18 @@ class Search extends React.Component {
       buttonIndex,
     } = this.state;
     return (
-      <div class="container">
-        <header class="title2">
+      <div className="container">
+        <header className="title2">
           <Weather season={season} weatherStatement={weatherStatement} />
         </header>
-        <div class="food-list">
+        <div className="food-list">
           {menus.map((menu) => (
             <Foodlist foodname={menu} />
           ))}
-          <p class="howabout">은 어떠세요?</p>
+          <p className="howabout">은 어떠세요?</p>
         </div>
         <div className="map-container">
-          <div className="main">
+          <div id="main" className="main">
             <div className="contents">
               <div className="buttons-container">
                 {menus.map((menu) => (
@@ -415,7 +416,7 @@ class Search extends React.Component {
                 <MapContainer menus={menus} lat={lat} lon={lon} />
               </div>
             </div>
-            <div id="sidebar" className="sidebar hide">
+            <div id="sidebar" className="sidebar">
               <Sidebar sidebarInfo={sidebarInfo} />
             </div>
           </div>
