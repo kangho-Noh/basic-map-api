@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap");
 
 body {
   line-height: 1;
@@ -62,25 +61,24 @@ h1 {
 #day {
 }
 
-.title2{
+.title2 {
   /* margin:30px; */
-  margin-bottom:30px;
+  margin-bottom: 30px;
   font-weight: 700;
   display: flex;
   justify-content: center;
 }
-.food-list{
-  
+.food-list {
   justify-content: center;
   /* background-color: red; */
 }
-.howabout{
+.howabout {
   margin-top: 10px;
-  
+
   font-size: 25px;
   text-align: center;
   font-weight: 500;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 }
 .js-input {
   text-align: center;
@@ -159,6 +157,7 @@ h1 {
   overflow: hidden;
   width: 90%;
   height: 90%;
+  box-sizing: initial;
 }
 #menu_wrap {
   position: absolute;
